@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/api';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion'; // Animation library
 
@@ -25,7 +25,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+      const response = await api.post('/auth/login', formData);
       
       if (response.data) {
         localStorage.setItem('user', JSON.stringify(response.data));

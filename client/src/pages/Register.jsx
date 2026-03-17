@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/api';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
@@ -28,7 +28,7 @@ const Register = () => {
 
     try {
       // Register the user
-      const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+      const response = await api.post('/auth/register', formData);
       
       if (response.data) {
         localStorage.setItem('user', JSON.stringify(response.data));

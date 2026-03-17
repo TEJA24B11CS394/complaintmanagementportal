@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // <--- Added Link
-import axios from 'axios';
+import api from '../api/api';
 import { motion } from 'framer-motion';
 import { FiSearch, FiFilter, FiMessageSquare } from 'react-icons/fi';
 
@@ -15,9 +15,7 @@ const MyHistory = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem('user'));
-        const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get('http://localhost:5000/api/complaints', config);
+        const { data } = await api.get('/complaints');
         setComplaints(data);
         setFiltered(data);
       } catch (error) {

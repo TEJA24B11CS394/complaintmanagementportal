@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // <--- Import Link
-import axios from 'axios';
+import api from '../api/api';
 import { motion } from 'framer-motion';
 import { FiClock, FiCheckCircle, FiAlertCircle, FiMessageSquare } from 'react-icons/fi'; // <--- Import Message Icon
 
@@ -17,16 +17,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem('user'));
-        const token = user?.token;
-
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-
-        const { data } = await axios.get('http://localhost:5000/api/complaints', config);
+        const { data } = await api.get('/complaints');
         
         // Calculate Stats
         const total = data.length;

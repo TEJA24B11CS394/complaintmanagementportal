@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // <--- Added Link
-import axios from 'axios';
+import api from '../api/api';
 import toast from 'react-hot-toast';
 import { FiCheckCircle, FiXCircle, FiFilter, FiMessageSquare } from 'react-icons/fi';
 
@@ -12,10 +12,7 @@ const AdminDashboard = () => {
   // Fetch ALL complaints
   const fetchComplaints = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem('user'));
-      const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      
-      const { data } = await axios.get('http://localhost:5000/api/complaints', config);
+      const { data } = await api.get('/complaints');
       setComplaints(data);
     } catch (error) {
       toast.error('Failed to fetch complaints');
@@ -31,10 +28,7 @@ const AdminDashboard = () => {
   // Handle Status Change
   const updateStatus = async (id, newStatus) => {
     try {
-      const user = JSON.parse(localStorage.getItem('user'));
-      const config = { headers: { Authorization: `Bearer ${user.token}` } };
-
-      await axios.put(`http://localhost:5000/api/complaints/${id}`, { status: newStatus }, config);
+      await api.put(`/complaints/${id}`, { status: newStatus });
       
       toast.success(`Status updated to ${newStatus}`);
       fetchComplaints(); // Refresh list

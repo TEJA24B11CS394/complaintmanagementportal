@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/api';
 import { FiSend, FiUser, FiArrowLeft, FiClock } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
@@ -22,11 +22,7 @@ const ComplaintDetails = () => {
   useEffect(() => {
     const fetchComplaint = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem('user'));
-        setCurrentUser(user);
-        const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        
-        const { data } = await axios.get(`http://localhost:5000/api/complaints/${id}`, config);
+        const { data } = await api.get(`/complaints/${id}`);
         setComplaint(data);
         setLoading(false);
       } catch (error) {
@@ -47,12 +43,11 @@ const ComplaintDetails = () => {
     if (!text.trim()) return;
 
     try {
-      const config = { headers: { Authorization: `Bearer ${currentUser.token}` } };
-      await axios.post(`http://localhost:5000/api/complaints/${id}/comment`, { text }, config);
+      await api.post(`/complaints/${id}/comment`, { text });
       
       // Update UI immediately (Optimistic update or re-fetch)
       // Ideally re-fetch to get server timestamp
-      const { data } = await axios.get(`http://localhost:5000/api/complaints/${id}`, config);
+      const { data } = await api.get(`/complaints/${id}`);
       setComplaint(data);
       setText('');
     } catch (error) {

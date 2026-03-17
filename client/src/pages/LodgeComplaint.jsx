@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/api';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { FiSend, FiType, FiGrid, FiAlertTriangle, FiFileText } from 'react-icons/fi';
@@ -30,12 +30,7 @@ const LodgeComplaint = () => {
     setLoading(true);
 
     try {
-      const user = JSON.parse(localStorage.getItem('user'));
-      const token = user?.token;
-
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-
-      await axios.post('http://localhost:5000/api/complaints', formData, config);
+      await api.post('/complaints', formData);
       
       toast.success('Complaint Submitted Successfully!');
       navigate('/dashboard'); 
